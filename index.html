@@ -102,22 +102,29 @@ body.qd-dim:after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.48);z
 }
 @media(prefers-reduced-motion:reduce){.clock{animation:none}.clock .colon{animation:none}}
 
-/* No. 04 — balanced all-in-one landscape console */
+/* No. 05 — compact clock-first console, tuned for a small 16:9 screen */
+body[data-theme="obsidian"]{--bg:#000000;--panel:#090909;--panel2:#11100e;--line:#30291f;--gold:#b89b69;--gold-soft:#806b48;--cream:#eee5d3;--muted:#8f8778}
+body[data-theme="classic"]{--bg:#0e0e0c;--panel:#171714;--panel2:#22211d;--line:#403a2f;--gold:#b59b72;--gold-soft:#82704f;--cream:#e8dfcd;--muted:#a29a8b}
+body[data-theme="forest"]{--bg:#050b07;--panel:#0b130e;--panel2:#121b15;--line:#27372c;--gold:#9aaa91;--gold-soft:#6f806a;--cream:#dfe6d9;--muted:#8e9a90}
+body[data-theme="midnight"]{--bg:#080b10;--panel:#10151c;--panel2:#171e28;--line:#2d3948;--gold:#9baabe;--gold-soft:#71849d;--cream:#e1e6ed;--muted:#929eac}
+body[data-theme="mahogany"]{--bg:#100907;--panel:#1a100d;--panel2:#241713;--line:#493026;--gold:#bd8b77;--gold-soft:#8c6555;--cream:#e9d9ce;--muted:#a48d82}
+body[data-theme="custom"]{--bg:#000000;--panel:#090909;--panel2:#11100e;--line:#30291f;--cream:#eee5d3;--muted:#8f8778}
 .main{
  display:grid;
  grid-template-columns:minmax(0,1fr);
- grid-template-rows:minmax(0,1fr) minmax(130px,26vh);
- gap:clamp(8px,1.2vh,13px);
+ grid-template-rows:minmax(0,4.5fr) minmax(0,2.9fr) minmax(0,1.35fr);
+ gap:clamp(7px,1.15vh,12px);
+ flex:1;
+ min-height:0;
 }
 .clock-zone{
  display:grid;
  grid-template-columns:minmax(0,1fr);
  grid-template-rows:auto minmax(0,1fr);
  align-items:stretch;
- gap:0;
  min-width:0;
  min-height:0;
- padding:2px 0;
+ padding:1px 0;
 }
 .clockblock{
  display:grid;
@@ -126,155 +133,141 @@ body.qd-dim:after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.48);z
  align-content:center;
  align-items:center;
  justify-content:center;
- gap:0 clamp(15px,2.5vw,34px);
+ gap:0 clamp(14px,2.2vw,30px);
  padding:0;
  margin:0 auto;
 }
 .clock{
- grid-column:1;
- grid-row:1;
- align-self:end;
- font-size:clamp(66px,16vh,154px);
- line-height:.86;
- letter-spacing:-.065em;
- text-shadow:none;
+ grid-column:1;grid-row:1;align-self:end;
+ font-size:clamp(62px,13.5vh,130px);
+ line-height:.88;letter-spacing:-.065em;text-shadow:none;
 }
-.ampm{
- grid-column:1;
- grid-row:2;
- margin:8px 0 0 4px;
- font-size:clamp(8px,1vw,12px);
-}
-.datebig{
- grid-column:2;
- grid-row:1 / span 2;
- align-self:center;
- margin:0;
- font-size:clamp(17px,2.3vw,30px);
- line-height:1.2;
-}
-.datebig small{font-size:8px;margin-top:6px}
+.ampm{grid-column:1;grid-row:2;margin:6px 0 0 4px;font-size:clamp(8px,.9vw,11px)}
+.datebig{grid-column:2;grid-row:1 / span 2;align-self:center;margin:0;font-size:clamp(17px,2vw,26px);line-height:1.18}
+.datebig small{font-size:7px;margin-top:5px}
 .dashboard{
  display:grid;
- grid-template-columns:minmax(0,.88fr) minmax(0,.95fr) minmax(0,1.35fr);
+ grid-template-columns:minmax(0,1fr) minmax(0,1fr);
  grid-template-rows:minmax(0,1fr);
  gap:clamp(7px,1vw,12px);
- min-width:0;
- min-height:0;
+ min-width:0;min-height:0;
 }
 .card{
- min-height:0;
- padding:clamp(9px,1.2vw,15px);
- justify-content:center;
- border-radius:12px;
-}
-.eyebrow{font-size:8px}
-.weather-main{margin-top:8px}
-.weather-icon{font-size:clamp(23px,3vw,34px)}
-.temp{font-size:clamp(27px,3.4vw,39px)}
-.weather-desc{font-size:9px}
-.weather-meta{font-size:8px;margin-top:6px;gap:9px}
-.weather-credit{font-size:7px;margin-top:5px}
-.timer-value{font-size:clamp(31px,4vw,45px);margin-top:8px}
-.timer-mode{font-size:7px;margin-top:4px}
-.timer-actions{gap:5px;margin-top:8px}
-.smallbtn{font-size:8px;padding:6px 9px}
-.week-area{
- min-width:0;
- min-height:0;
+ min-width:0;min-height:0;
+ padding:clamp(8px,1.1vw,13px);
+ border:1px solid var(--line);
+ border-radius:11px;
+ background:var(--panel);
+ box-shadow:none;
  display:flex;
  flex-direction:column;
  justify-content:center;
- padding:clamp(9px,1.2vw,15px);
- background:var(--panel);
- border:1px solid var(--line);
- border-radius:12px;
 }
-.week-caption{
- font:8px Arial,sans-serif;
- letter-spacing:.15em;
- color:var(--gold);
- text-transform:uppercase;
- margin:0 0 9px 1px;
-}
-.week-strip{
+.eyebrow{font:8px Arial,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);display:flex;justify-content:space-between;gap:6px}
+.weather-main{display:flex;align-items:center;gap:8px;margin-top:6px}
+.weather-icon{font:clamp(22px,3vh,31px) Arial,sans-serif;line-height:1}
+.temp{font-size:clamp(27px,4vh,39px);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.weather-desc{font:9px Arial,sans-serif;color:var(--muted);margin-top:3px}
+.weather-meta{font:8px Arial,sans-serif;color:var(--muted);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}
+.weather-credit{font:7px Arial,sans-serif;color:#716958;margin-top:4px}
+.weather-link{color:var(--gold-soft);text-decoration:none}
+.timer-value{font-size:clamp(32px,4.5vh,48px);line-height:1;margin-top:7px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.timer-mode{font:7px Arial,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.timer-actions{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.smallbtn{border:1px solid rgba(184,155,105,.32);background:#15130f;border-radius:999px;padding:6px 10px;font:8px Arial,sans-serif;color:var(--cream);min-width:0}
+.smallbtn.primary{background:var(--gold);color:#17130b;border-color:var(--gold);font-weight:700}
+.week-area{
+ min-width:0;min-height:0;
  display:grid;
- grid-template-columns:repeat(7,minmax(0,1fr));
- gap:clamp(3px,.5vw,6px);
- max-width:none;
- margin:0;
+ grid-template-columns:110px minmax(0,1fr);
+ align-items:center;
+ gap:10px;
+ padding:6px 9px;
+ border:1px solid var(--line);
+ border-radius:10px;
+ background:var(--panel);
 }
-.daychip{padding:clamp(5px,.8vw,9px) 2px;border-radius:7px}
-.daychip .dow{font-size:clamp(6px,.55vw,8px)}
-.daychip .dom{font-size:clamp(10px,.9vw,14px);margin-top:4px}
-.foot{flex-basis:8px}
+.week-caption{font:8px Arial,sans-serif;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin:0 0 0 2px}
+.week-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:clamp(3px,.5vw,6px);max-width:none;margin:0}
+.daychip{border:1px solid rgba(184,155,105,.16);background:#050505;border-radius:6px;text-align:center;padding:clamp(4px,.7vh,7px) 2px;min-width:0}
+.daychip .dow{display:block;font:7px Arial,sans-serif;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+.daychip .dom{display:block;font:clamp(10px,1.1vw,13px) Georgia,serif;color:var(--cream);margin-top:3px}
+.daychip.today{background:rgba(184,155,105,.11);border-color:var(--gold)}
+.daychip.today .dow,.daychip.today .dom{color:var(--gold)}
+.foot{flex:0 0 8px;font:6px Arial,sans-serif;color:#6e685e;letter-spacing:.12em}
 @media(max-width:680px){
- .main{grid-template-rows:minmax(0,1fr) minmax(120px,34vh);gap:6px}
- .clock{font-size:clamp(58px,14vh,94px)}
- .clockblock{gap:0 16px}
- .datebig{font-size:clamp(15px,2.8vw,21px)}
- .datebig small{font-size:7px}
- .dashboard{grid-template-columns:minmax(0,.9fr) minmax(0,1fr) minmax(0,1.35fr);gap:5px}
- .card,.week-area{padding:7px;border-radius:9px}
- .eyebrow{font-size:6px;letter-spacing:.1em}
- .weather-main{gap:5px;margin-top:6px}
+ .main{grid-template-rows:minmax(0,4.1fr) minmax(0,2.9fr) minmax(0,1.2fr);gap:5px}
+ .clock{font-size:clamp(58px,13vh,82px)}
+ .clockblock{gap:0 12px}
+ .datebig{font-size:clamp(14px,2.5vw,19px)}
+ .datebig small{font-size:6px}
+ .dashboard{gap:5px}
+ .card{padding:7px;border-radius:9px}
+ .eyebrow{font-size:6px;letter-spacing:.09em}
+ .weather-main{gap:5px;margin-top:4px}
  .weather-icon{font-size:21px}
- .temp{font-size:clamp(22px,4vw,29px)}
+ .temp{font-size:clamp(23px,3.8vh,30px)}
  .weather-desc,.weather-meta{font-size:7px}
- .weather-meta{gap:5px;margin-top:4px}
+ .weather-meta{margin-top:4px;gap:5px}
  .weather-credit{font-size:6px;margin-top:3px}
- .timer-value{font-size:clamp(24px,4.5vw,32px);margin-top:5px}
+ .timer-value{font-size:clamp(27px,4.2vh,35px);margin-top:5px}
  .timer-mode{font-size:6px;margin-top:3px}
- .timer-actions{gap:3px;margin-top:5px}
- .smallbtn{font-size:7px;padding:5px 7px}
- .week-caption{font-size:6px;margin-bottom:5px}
- .daychip{padding:5px 1px}
+ .timer-actions{gap:4px;margin-top:5px}
+ .smallbtn{font-size:7px;padding:5px 8px}
+ .week-area{grid-template-columns:72px minmax(0,1fr);gap:5px;padding:5px}
+ .week-caption{font-size:6px;letter-spacing:.09em}
+ .daychip{padding:4px 1px}
  .daychip .dow{font-size:5px}
- .daychip .dom{font-size:10px;margin-top:3px}
+ .daychip .dom{font-size:10px;margin-top:2px}
 }
-@media(max-width:430px){
- .main{grid-template-rows:minmax(0,1fr) minmax(142px,39vh)}
- .dashboard{grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr) auto}
- .week-area{grid-column:1 / -1}
- .clock{font-size:clamp(52px,13vh,76px)}
- .clockblock{gap:0 10px}
- .datebig{font-size:14px}
- .week-strip{gap:5px}
- .daychip .dow{font-size:6px}
- .daychip .dom{font-size:11px}
+@media(max-width:420px){
+ .main{grid-template-rows:minmax(0,3.8fr) minmax(0,3.2fr) minmax(0,1.2fr)}
+ .clock{font-size:clamp(51px,12vh,68px)}
+ .clockblock{gap:0 8px}
+ .datebig{font-size:13px}
+ .dashboard{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .week-area{grid-template-columns:60px minmax(0,1fr)}
+ .daychip .dow{font-size:4px}
 }
 @media(max-height:430px) and (orientation:landscape){
- .app{padding:5px 8px;gap:4px}
- .topbar{height:19px;flex-basis:19px}
- .main{grid-template-rows:minmax(0,1fr) minmax(108px,34vh);gap:5px}
- .clock{font-size:clamp(48px,16vh,72px)}
- .datebig{font-size:clamp(13px,3vw,19px)}
- .datebig small{font-size:6px;margin-top:3px}
- .dashboard{gap:5px}
- .card,.week-area{padding:6px}
+ .app{padding:5px 7px;gap:4px}
+ .topbar{height:19px;flex-basis:19px;padding-bottom:3px}
+ .main{grid-template-rows:minmax(0,4.0fr) minmax(0,3.0fr) minmax(0,1.15fr);gap:4px}
+ .clock{font-size:clamp(48px,15vh,66px)}
+ .datebig{font-size:clamp(13px,3vw,17px)}
+ .datebig small{font-size:5px;margin-top:3px}
+ .card{padding:5px;border-radius:8px}
  .weather-main{margin-top:3px}
- .weather-icon{font-size:19px}
+ .weather-icon{font-size:18px}
  .temp{font-size:23px}
+ .weather-desc,.weather-meta{font-size:6px}
  .weather-meta{margin-top:3px}
+ .weather-credit{font-size:5px;margin-top:2px}
  .timer-value{font-size:25px;margin-top:3px}
- .timer-actions{margin-top:4px}
- .week-caption{margin-bottom:4px}
- .daychip{padding:4px 1px}
+ .timer-mode{font-size:5px;margin-top:2px}
+ .timer-actions{margin-top:3px;gap:3px}
+ .smallbtn{font-size:6px;padding:4px 6px}
+ .week-area{grid-template-columns:58px minmax(0,1fr);padding:3px 5px}
+ .week-caption{font-size:5px}
+ .daychip{padding:3px 1px}
+ .daychip .dow{font-size:5px}
+ .daychip .dom{font-size:9px;margin-top:1px}
  .foot{font-size:5px;flex-basis:6px}
 }
 @media(orientation:portrait){
  .app{overflow:auto}
- .main{grid-template-rows:auto auto}
- .clock-zone{min-height:180px}
- .dashboard{grid-template-columns:1fr 1fr;grid-template-rows:auto auto}
- .week-area{grid-column:1 / -1}
+ .main{grid-template-rows:auto auto auto}
+ .clock-zone{min-height:165px}
+ .dashboard{grid-template-columns:1fr 1fr;min-height:120px}
+ .week-area{min-height:50px}
 }
+@media(prefers-reduced-motion:reduce){.clock{animation:none}.clock .colon{animation:none}}
 </style>
 </head>
 <body data-theme="obsidian">
 <div class="app">
  <header class="topbar">
-  <div class="brand">Quiet Desk <span style="color:var(--muted)">/</span> No. 03</div>
+  <div class="brand">Quiet Desk <span style="color:var(--muted)">/</span> No. 05</div>
   <div class="topright"><span id="connection">LOCAL TIME</span><div class="topbuttons">
    <button class="iconbtn" id="fullscreenBtn" aria-label="Full screen" title="Full screen">⛶</button>
    <button class="iconbtn" id="settingsBtn" aria-label="Settings" title="Settings">⚙</button>
@@ -306,10 +299,10 @@ body.qd-dim:after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.48);z
     <button class="smallbtn" id="timerReset" aria-label="Reset timer">↺</button>
    </div>
   </section>
-  <section class="week-area" aria-label="Weekly calendar">
-   <div class="week-caption">THIS WEEK</div>
-   <div class="week-strip" id="weekStrip" aria-label="This week"></div>
-  </section>
+ </section>
+ <section class="week-area" aria-label="Weekly calendar">
+  <div class="week-caption">THIS WEEK</div>
+  <div class="week-strip" id="weekStrip" aria-label="This week"></div>
  </section>
 </main>
  <footer class="foot"><span>TAKE YOUR TIME · DO ONE THING WELL</span><span id="footerDate">LOCAL · INDIA</span></footer>
@@ -348,8 +341,13 @@ body.qd-dim:after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.48);z
  }
  function applyTheme(){
   document.body.setAttribute('data-theme',themeName);
-  document.documentElement.style.setProperty('--gold',accentColor);
-  document.documentElement.style.setProperty('--gold-soft',accentColor);
+  if(themeName==='custom'){
+   document.documentElement.style.setProperty('--gold',accentColor);
+   document.documentElement.style.setProperty('--gold-soft',accentColor);
+  }else{
+   document.documentElement.style.removeProperty('--gold');
+   document.documentElement.style.removeProperty('--gold-soft');
+  }
  }
  function resetIdleDim(){
   clearTimeout(idleTimer);document.body.classList.remove('qd-dim');
