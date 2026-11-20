@@ -225,6 +225,15 @@ body.qd-dim:after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.48);z
     <div class="field"><label for="themeSelect">Display theme</label><select id="themeSelect"><option value="obsidian">Obsidian · pure AMOLED black</option><option value="classic">Classic · charcoal and gold</option><option value="forest">Forest · deep green</option><option value="midnight">Midnight · navy</option><option value="mahogany">Mahogany · dark red-brown</option><option value="custom">Custom · black base</option></select><p>Theme changes are saved on this phone.</p></div>
     <div class="field"><label for="accentColor">Custom accent colour</label><input id="accentColor" type="color" value="#c0a065"><p>Choose the highlight colour used for the clock details and controls.</p></div>
     <div class="field"><label><input id="dimEnabled" type="checkbox" style="width:auto;vertical-align:middle;margin-right:7px"> Dim after 5 minutes without interaction</label><p>Tap anywhere to restore normal brightness. This is an overlay, not a hardware brightness control.</p></div>
+    <div class="field"><label>Visible sections</label>
+      <div class="section-toggles">
+        <label><input id="showWeather" type="checkbox"> Weather</label>
+        <label><input id="showTimer" type="checkbox"> Focus timer</label>
+        <label><input id="showCalendar" type="checkbox"> Week calendar</label>
+        <label><input id="showPhoto" type="checkbox"> Photo frame</label>
+      </div>
+      <p>Hide any panel you don't need. The clock remains visible.</p>
+    </div>
     <div class="field"><label for="clockFormat">Clock format</label><select id="clockFormat"><option value="12">12-hour with AM / PM</option><option value="24">24-hour</option></select></div>
     <div class="field"><label for="slideInterval">Photo change interval</label><select id="slideInterval"><option value="8">Every 8 seconds</option><option value="12">Every 12 seconds</option><option value="20">Every 20 seconds</option><option value="30">Every 30 seconds</option></select></div>
     <div class="field"><label>Photo library</label><p id="libraryInfo">Photos you add are resized and saved locally in this browser on this phone.</p><button class="smallbtn" id="clearPhotos">Clear saved photos</button></div>
@@ -259,11 +268,25 @@ body.qd-dim:after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.48);z
   var themeName = localStorage.getItem('qd_theme') || 'obsidian';
   var accentColor = localStorage.getItem('qd_accent') || '#c0a065';
   var dimEnabled = localStorage.getItem('qd_dim_enabled') === '1';
+  var showWeather = localStorage.getItem('qd_show_weather') !== '0';
+  var showTimer = localStorage.getItem('qd_show_timer') !== '0';
+  var showCalendar = localStorage.getItem('qd_show_calendar') !== '0';
+  var showPhoto = localStorage.getItem('qd_show_photo') !== '0';
   var idleTimer = null;
   function applyTheme(){
     document.body.setAttribute('data-theme',themeName);
     document.documentElement.style.setProperty('--gold',accentColor);
     document.documentElement.style.setProperty('--gold-soft',accentColor);
+  }
+  function applyVisibility(){
+    $('weatherCard').style.display=showWeather?'':'none';
+    $('timerCard').style.display=showTimer?'':'none';
+    $('weekStrip').style.display=showCalendar?'':'none';
+    $('photoPanel').style.display=showPhoto?'':'none';
+    var row=document.querySelector('.info-row');
+    row.classList.toggle('qd-one-card',showWeather!==showTimer);
+    row.style.display=(showWeather||showTimer)?'grid':'none';
+    document.querySelector('.main').classList.toggle('qd-no-photo',!showPhoto);
   }
   function resetIdleDim(){
     clearTimeout(idleTimer);
@@ -435,16 +458,16 @@ body.qd-dim:after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.48);z
   $('prevPhoto').addEventListener('click',function(){nextPhoto(-1);});$('nextPhoto').addEventListener('click',function(){nextPhoto(1);});
   $('playPhotos').addEventListener('click',function(){photoPlaying=!photoPlaying;restartSlideshow();});
   $('addPhotos').addEventListener('click',openPicker);$('emptyAdd').addEventListener('click',openPicker);
-  $('settingsBtn').addEventListener('click',function(){$('cityInput').value=weatherCity;$('clockFormat').value=clockFormat;$('slideInterval').value=String(slideInterval);$('themeSelect').value=themeName;$('accentColor').value=accentColor;$('dimEnabled').checked=dimEnabled;$('settingsOverlay').classList.add('open');});
+  $('settingsBtn').addEventListener('click',function(){$('cityInput').value=weatherCity;$('clockFormat').value=clockFormat;$('slideInterval').value=String(slideInterval);$('themeSelect').value=themeName;$('accentColor').value=accentColor;$('dimEnabled').checked=dimEnabled;$('showWeather').checked=showWeather;$('showTimer').checked=showTimer;$('showCalendar').checked=showCalendar;$('showPhoto').checked=showPhoto;$('settingsOverlay').classList.add('open');});
   function closeSettings(){$('settingsOverlay').classList.remove('open');}
   $('closeSettings').addEventListener('click',closeSettings);$('cancelSettings').addEventListener('click',closeSettings);
   $('saveSettings').addEventListener('click',function(){
     var newCity=$('cityInput').value.trim();
     clockFormat=$('clockFormat').value;slideInterval=parseInt($('slideInterval').value,10)||12;
-    themeName=$('themeSelect').value;accentColor=$('accentColor').value||'#c0a065';dimEnabled=$('dimEnabled').checked;
+    themeName=$('themeSelect').value;accentColor=$('accentColor').value||'#c0a065';dimEnabled=$('dimEnabled').checked;showWeather=$('showWeather').checked;showTimer=$('showTimer').checked;showCalendar=$('showCalendar').checked;showPhoto=$('showPhoto').checked;
     localStorage.setItem('qd_clock_format',clockFormat);localStorage.setItem('qd_slide_interval',String(slideInterval));
-    localStorage.setItem('qd_theme',themeName);localStorage.setItem('qd_accent',accentColor);localStorage.setItem('qd_dim_enabled',dimEnabled?'1':'0');
-    applyTheme();resetIdleDim();
+    localStorage.setItem('qd_theme',themeName);localStorage.setItem('qd_accent',accentColor);localStorage.setItem('qd_dim_enabled',dimEnabled?'1':'0');localStorage.setItem('qd_show_weather',showWeather?'1':'0');localStorage.setItem('qd_show_timer',showTimer?'1':'0');localStorage.setItem('qd_show_calendar',showCalendar?'1':'0');localStorage.setItem('qd_show_photo',showPhoto?'1':'0');
+    applyTheme();applyVisibility();resetIdleDim();
     updateClock();restartSlideshow();closeSettings();
     if(newCity && newCity.toLowerCase()!==weatherCity.toLowerCase())saveWeatherLocation(newCity);
     else if(!weatherCity && newCity)saveWeatherLocation(newCity);
@@ -483,4 +506,9 @@ body.qd-dim:after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.48);z
 })();
 </script>
 </body>
-</html>
+</html>  .section-toggles{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:8px}
+  .section-toggles label{display:flex;align-items:center;gap:7px;font:12px Arial,sans-serif;letter-spacing:0;text-transform:none;color:var(--cream);margin:0}
+  .section-toggles input{width:15px;height:15px;accent-color:var(--gold);margin:0}
+  .main.qd-no-photo{grid-template-columns:1fr}
+  .info-row.qd-one-card{grid-template-columns:1fr}
+
