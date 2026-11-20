@@ -101,6 +101,174 @@ body.qd-dim:after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.48);z
  .app{overflow:auto}
 }
 @media(prefers-reduced-motion:reduce){.clock{animation:none}.clock .colon{animation:none}}
+
+/* No. 04 — balanced all-in-one landscape console */
+.main{
+ display:grid;
+ grid-template-columns:minmax(0,1fr);
+ grid-template-rows:minmax(0,1fr) minmax(130px,26vh);
+ gap:clamp(8px,1.2vh,13px);
+}
+.clock-zone{
+ display:grid;
+ grid-template-columns:minmax(0,1fr);
+ grid-template-rows:auto minmax(0,1fr);
+ align-items:stretch;
+ gap:0;
+ min-width:0;
+ min-height:0;
+ padding:2px 0;
+}
+.clockblock{
+ display:grid;
+ grid-template-columns:auto auto;
+ grid-template-rows:auto auto;
+ align-content:center;
+ align-items:center;
+ justify-content:center;
+ gap:0 clamp(15px,2.5vw,34px);
+ padding:0;
+ margin:0 auto;
+}
+.clock{
+ grid-column:1;
+ grid-row:1;
+ align-self:end;
+ font-size:clamp(66px,16vh,154px);
+ line-height:.86;
+ letter-spacing:-.065em;
+ text-shadow:none;
+}
+.ampm{
+ grid-column:1;
+ grid-row:2;
+ margin:8px 0 0 4px;
+ font-size:clamp(8px,1vw,12px);
+}
+.datebig{
+ grid-column:2;
+ grid-row:1 / span 2;
+ align-self:center;
+ margin:0;
+ font-size:clamp(17px,2.3vw,30px);
+ line-height:1.2;
+}
+.datebig small{font-size:8px;margin-top:6px}
+.dashboard{
+ display:grid;
+ grid-template-columns:minmax(0,.88fr) minmax(0,.95fr) minmax(0,1.35fr);
+ grid-template-rows:minmax(0,1fr);
+ gap:clamp(7px,1vw,12px);
+ min-width:0;
+ min-height:0;
+}
+.card{
+ min-height:0;
+ padding:clamp(9px,1.2vw,15px);
+ justify-content:center;
+ border-radius:12px;
+}
+.eyebrow{font-size:8px}
+.weather-main{margin-top:8px}
+.weather-icon{font-size:clamp(23px,3vw,34px)}
+.temp{font-size:clamp(27px,3.4vw,39px)}
+.weather-desc{font-size:9px}
+.weather-meta{font-size:8px;margin-top:6px;gap:9px}
+.weather-credit{font-size:7px;margin-top:5px}
+.timer-value{font-size:clamp(31px,4vw,45px);margin-top:8px}
+.timer-mode{font-size:7px;margin-top:4px}
+.timer-actions{gap:5px;margin-top:8px}
+.smallbtn{font-size:8px;padding:6px 9px}
+.week-area{
+ min-width:0;
+ min-height:0;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ padding:clamp(9px,1.2vw,15px);
+ background:var(--panel);
+ border:1px solid var(--line);
+ border-radius:12px;
+}
+.week-caption{
+ font:8px Arial,sans-serif;
+ letter-spacing:.15em;
+ color:var(--gold);
+ text-transform:uppercase;
+ margin:0 0 9px 1px;
+}
+.week-strip{
+ display:grid;
+ grid-template-columns:repeat(7,minmax(0,1fr));
+ gap:clamp(3px,.5vw,6px);
+ max-width:none;
+ margin:0;
+}
+.daychip{padding:clamp(5px,.8vw,9px) 2px;border-radius:7px}
+.daychip .dow{font-size:clamp(6px,.55vw,8px)}
+.daychip .dom{font-size:clamp(10px,.9vw,14px);margin-top:4px}
+.foot{flex-basis:8px}
+@media(max-width:680px){
+ .main{grid-template-rows:minmax(0,1fr) minmax(120px,34vh);gap:6px}
+ .clock{font-size:clamp(58px,14vh,94px)}
+ .clockblock{gap:0 16px}
+ .datebig{font-size:clamp(15px,2.8vw,21px)}
+ .datebig small{font-size:7px}
+ .dashboard{grid-template-columns:minmax(0,.9fr) minmax(0,1fr) minmax(0,1.35fr);gap:5px}
+ .card,.week-area{padding:7px;border-radius:9px}
+ .eyebrow{font-size:6px;letter-spacing:.1em}
+ .weather-main{gap:5px;margin-top:6px}
+ .weather-icon{font-size:21px}
+ .temp{font-size:clamp(22px,4vw,29px)}
+ .weather-desc,.weather-meta{font-size:7px}
+ .weather-meta{gap:5px;margin-top:4px}
+ .weather-credit{font-size:6px;margin-top:3px}
+ .timer-value{font-size:clamp(24px,4.5vw,32px);margin-top:5px}
+ .timer-mode{font-size:6px;margin-top:3px}
+ .timer-actions{gap:3px;margin-top:5px}
+ .smallbtn{font-size:7px;padding:5px 7px}
+ .week-caption{font-size:6px;margin-bottom:5px}
+ .daychip{padding:5px 1px}
+ .daychip .dow{font-size:5px}
+ .daychip .dom{font-size:10px;margin-top:3px}
+}
+@media(max-width:430px){
+ .main{grid-template-rows:minmax(0,1fr) minmax(142px,39vh)}
+ .dashboard{grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr) auto}
+ .week-area{grid-column:1 / -1}
+ .clock{font-size:clamp(52px,13vh,76px)}
+ .clockblock{gap:0 10px}
+ .datebig{font-size:14px}
+ .week-strip{gap:5px}
+ .daychip .dow{font-size:6px}
+ .daychip .dom{font-size:11px}
+}
+@media(max-height:430px) and (orientation:landscape){
+ .app{padding:5px 8px;gap:4px}
+ .topbar{height:19px;flex-basis:19px}
+ .main{grid-template-rows:minmax(0,1fr) minmax(108px,34vh);gap:5px}
+ .clock{font-size:clamp(48px,16vh,72px)}
+ .datebig{font-size:clamp(13px,3vw,19px)}
+ .datebig small{font-size:6px;margin-top:3px}
+ .dashboard{gap:5px}
+ .card,.week-area{padding:6px}
+ .weather-main{margin-top:3px}
+ .weather-icon{font-size:19px}
+ .temp{font-size:23px}
+ .weather-meta{margin-top:3px}
+ .timer-value{font-size:25px;margin-top:3px}
+ .timer-actions{margin-top:4px}
+ .week-caption{margin-bottom:4px}
+ .daychip{padding:4px 1px}
+ .foot{font-size:5px;flex-basis:6px}
+}
+@media(orientation:portrait){
+ .app{overflow:auto}
+ .main{grid-template-rows:auto auto}
+ .clock-zone{min-height:180px}
+ .dashboard{grid-template-columns:1fr 1fr;grid-template-rows:auto auto}
+ .week-area{grid-column:1 / -1}
+}
 </style>
 </head>
 <body data-theme="obsidian">
@@ -113,34 +281,37 @@ body.qd-dim:after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.48);z
   </div></div>
  </header>
  <main class="main">
-  <section class="clock-zone">
-   <div class="datehead"><span class="dot"></span><span id="weekdayLine">YOUR DESK COMPANION</span></div>
-   <div class="clockblock">
-    <div class="clock" id="clock">--<span class="colon">:</span>--</div>
-    <div class="ampm" id="ampm">LOCAL TIME</div>
-    <div class="datebig" id="dateBig">Loading date…<small id="dateSmall">YOUR LOCAL CALENDAR</small></div>
+ <section class="clock-zone">
+  <div class="datehead"><span class="dot"></span><span id="weekdayLine">YOUR DESK COMPANION</span></div>
+  <div class="clockblock">
+   <div class="clock" id="clock">--<span class="colon">:</span>--</div>
+   <div class="ampm" id="ampm">LOCAL TIME</div>
+   <div class="datebig" id="dateBig">Loading date…<small id="dateSmall">YOUR LOCAL CALENDAR</small></div>
+  </div>
+ </section>
+ <section class="dashboard">
+  <section class="card" id="weatherCard" aria-label="Weather">
+   <div class="eyebrow"><span>Weather</span><span id="weatherPlace">SET LOCATION</span></div>
+   <div class="weather-main"><div class="weather-icon" id="weatherIcon">☼</div><div><div class="temp" id="temperature">--°</div><div class="weather-desc" id="weatherDesc">Add your city in settings</div></div></div>
+   <div class="weather-meta"><span id="feelsLike">Feels --°</span><span id="humidity">Humidity --%</span></div>
+   <div class="weather-credit">Weather by <a class="weather-link" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a></div>
+  </section>
+  <section class="card" id="timerCard" aria-label="Pomodoro timer">
+   <div class="eyebrow"><span>Focus timer</span><span id="timerStatus">READY</span></div>
+   <div class="timer-value" id="timerValue">25:00</div>
+   <div class="timer-mode" id="timerMode">25 MIN · FOCUS</div>
+   <div class="timer-actions">
+    <button class="smallbtn primary" id="timerStart">Start</button>
+    <button class="smallbtn" id="timerModeBtn">5 min break</button>
+    <button class="smallbtn" id="timerReset" aria-label="Reset timer">↺</button>
    </div>
-   <div class="week-area"><div class="week-caption">THIS WEEK</div><div class="week-strip" id="weekStrip" aria-label="This week"></div></div>
   </section>
-  <section class="dashboard">
-   <section class="card" id="weatherCard" aria-label="Weather">
-    <div class="eyebrow"><span>Weather</span><span id="weatherPlace">SET LOCATION</span></div>
-    <div class="weather-main"><div class="weather-icon" id="weatherIcon">☼</div><div><div class="temp" id="temperature">--°</div><div class="weather-desc" id="weatherDesc">Add your city in settings</div></div></div>
-    <div class="weather-meta"><span id="feelsLike">Feels --°</span><span id="humidity">Humidity --%</span></div>
-    <div class="weather-credit">Weather by <a class="weather-link" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a></div>
-   </section>
-   <section class="card" id="timerCard" aria-label="Pomodoro timer">
-    <div class="eyebrow"><span>Focus timer</span><span id="timerStatus">READY</span></div>
-    <div class="timer-value" id="timerValue">25:00</div>
-    <div class="timer-mode" id="timerMode">25 MIN · FOCUS</div>
-    <div class="timer-actions">
-     <button class="smallbtn primary" id="timerStart">Start</button>
-     <button class="smallbtn" id="timerModeBtn">5 min break</button>
-     <button class="smallbtn" id="timerReset" aria-label="Reset timer">↺</button>
-    </div>
-   </section>
+  <section class="week-area" aria-label="Weekly calendar">
+   <div class="week-caption">THIS WEEK</div>
+   <div class="week-strip" id="weekStrip" aria-label="This week"></div>
   </section>
- </main>
+ </section>
+</main>
  <footer class="foot"><span>TAKE YOUR TIME · DO ONE THING WELL</span><span id="footerDate">LOCAL · INDIA</span></footer>
 </div>
 <div class="overlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-label="Desk settings">
