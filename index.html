@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#10110f">
+<meta name="description" content="A quiet, classic desk clock with weather, focus timer, calendar and photo frame.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon-192.png">
+<title>Quiet Desk — J7 Desk Clock</title>
+<style>
+  :root{
+    --bg:#10110f; --panel:#191a17; --panel2:#20211d; --line:#4b4434;
+    --gold:#c4a66a; --gold-soft:#90794e; --cream:#eee6d4; --muted:#a59d8d;
+    --green:#87917b; --red:#bd806a; --radius:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{width:100%;height:100%;margin:0;background:var(--bg);color:var(--cream);overflow:hidden}
+  body{font-family:Georgia,'Times New Roman',serif;}
+  button,input{font:inherit}
+  button{color:inherit;cursor:pointer}
+  .app{width:100%;height:100%;min-height:0;display:flex;flex-direction:column;padding:clamp(10px,2.1vw,24px);gap:clamp(8px,1.4vh,14px);background:
+    radial-gradient(ellipse at 12% 12%,rgba(196,166,106,.075),transparent 38%),
+    radial-gradient(ellipse at 85% 88%,rgba(135,145,123,.055),transparent 34%),var(--bg)}
+  .topbar{height:28px;flex:0 0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(196,166,106,.26);padding:0 2px 8px}
+  .brand{font-size:clamp(9px,1.35vw,13px);letter-spacing:.22em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+  .topright{display:flex;align-items:center;gap:12px;color:var(--muted);font:10px/1.2 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+  .iconbtn{border:1px solid var(--line);background:rgba(32,33,29,.82);border-radius:50%;width:29px;height:29px;display:grid;place-items:center;color:var(--gold);font:16px Arial,sans-serif;padding:0}
+  .topbuttons{display:flex;align-items:center;gap:6px}
+  .main{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:clamp(10px,1.8vw,20px);flex:1;min-height:0}
+  .left{display:flex;flex-direction:column;justify-content:space-between;min-width:0;min-height:0;padding:clamp(5px,1vh,12px) 0}
+  .datehead{display:flex;align-items:center;gap:9px;color:var(--muted);font:clamp(9px,1.3vw,12px) Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+  .datehead .dot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
+  .clockblock{padding:clamp(5px,1.4vh,16px) 0 0;}
+  .clock{font-size:clamp(58px,11vw,126px);line-height:.94;letter-spacing:-.065em;font-weight:400;color:var(--cream);font-variant-numeric:tabular-nums;white-space:nowrap;text-shadow:0 3px 24px rgba(0,0,0,.25)}
+  .clock .colon{color:var(--gold);padding:0 .015em;animation:blink 2s steps(2,start) infinite}
+  @keyframes blink{to{opacity:.42}}
+  .ampm{font:clamp(10px,1.5vw,14px) Arial,sans-serif;color:var(--gold);letter-spacing:.2em;margin:10px 0 0 5px}
+  .datebig{font-size:clamp(17px,2.5vw,26px);color:var(--cream);margin-top:clamp(12px,2.2vh,22px);line-height:1.15}
+  .datebig small{display:block;font:10px Arial,sans-serif;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-top:7px}
+  .week-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:clamp(10px,1.7vh,16px);max-width:420px}
+  .daychip{border:1px solid rgba(196,166,106,.15);background:rgba(31,32,28,.7);border-radius:9px;text-align:center;padding:7px 2px 6px;min-width:0}
+  .daychip .dow{display:block;font:8px Arial,sans-serif;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+  .daychip .dom{display:block;font:14px Georgia,serif;color:var(--cream);margin-top:4px}
+  .daychip.today{background:rgba(196,166,106,.18);border-color:var(--gold)}
+  .daychip.today .dow,.daychip.today .dom{color:var(--gold)}
+  .info-row{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,1.3vw,14px);margin-top:clamp(12px,2vh,20px)}
+  .card{background:linear-gradient(145deg,rgba(35,36,31,.97),rgba(24,25,22,.97));border:1px solid rgba(196,166,106,.24);border-radius:var(--radius);padding:clamp(10px,1.55vw,17px);min-width:0;min-height:108px;box-shadow:0 7px 24px rgba(0,0,0,.14)}
+  .eyebrow{font:9px Arial,sans-serif;letter-spacing:.17em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;justify-content:space-between;gap:4px}
+  .weather-main{display:flex;align-items:center;gap:8px;margin-top:9px}
+  .weather-icon{font:clamp(25px,4vw,38px) Arial,sans-serif;line-height:1}
+  .temp{font-size:clamp(28px,4.8vw,48px);line-height:1;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+  .weather-desc{font:10px Arial,sans-serif;color:var(--muted);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .weather-meta{font:9px Arial,sans-serif;color:var(--muted);margin-top:10px;display:flex;gap:9px;flex-wrap:wrap}
+  .weather-link{font:9px Arial,sans-serif;color:var(--gold-soft);text-decoration:none;margin-top:7px;display:inline-block}
+  .timer-value{font-size:clamp(28px,4.6vw,44px);line-height:1;margin-top:12px;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+  .timer-mode{font:9px Arial,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+  .timer-actions{display:flex;gap:6px;margin-top:11px}
+  .smallbtn{border:1px solid rgba(196,166,106,.35);background:#292920;border-radius:999px;padding:6px 11px;font:10px Arial,sans-serif;color:var(--cream);min-width:0}
+  .smallbtn.primary{background:var(--gold);color:#171711;border-color:var(--gold);font-weight:700}
+  .photo{position:relative;min-width:0;min-height:0;border:1px solid rgba(196,166,106,.42);border-radius:20px;overflow:hidden;background:
+    radial-gradient(ellipse at 50% 40%,rgba(196,166,106,.12),transparent 52%),linear-gradient(145deg,#27271f,#141512);box-shadow:inset 0 0 0 5px rgba(196,166,106,.035),0 10px 30px rgba(0,0,0,.22)}
+  .photo:before{content:'';position:absolute;inset:8px;border:1px solid rgba(196,166,106,.18);border-radius:14px;pointer-events:none;z-index:2}
+  .photo img{width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0}
+  .photo.has-photo img{display:block}
+  .photo:after{content:'';position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(10,11,9,.82));pointer-events:none;z-index:1}
+  .empty-photo{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;text-align:center;padding:24px;color:var(--muted)}
+  .empty-photo .frameicon{font-size:36px;color:var(--gold);opacity:.85}
+  .empty-photo strong{font-size:clamp(14px,2vw,19px);font-weight:400;color:var(--cream)}
+  .empty-photo span{font:10px/1.5 Arial,sans-serif;max-width:180px}
+  .photo.has-photo .empty-photo{display:none}
+  .photo-overlay{position:absolute;z-index:3;bottom:0;left:0;right:0;padding:clamp(15px,2vw,22px);display:flex;justify-content:space-between;align-items:end;gap:10px}
+  .photo-label{min-width:0}
+  .photo-label .eyebrow{color:#d3bd8d}
+  .photo-name{font-size:clamp(13px,1.8vw,18px);margin-top:5px;color:#f0e8d8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
+  .photo-controls{display:flex;gap:6px;align-items:center}
+  .photobtn{width:30px;height:30px;border-radius:50%;border:1px solid rgba(239,230,212,.5);background:rgba(12,13,11,.45);color:#fff;font:14px Arial,sans-serif;display:grid;place-items:center;padding:0}
+  .photobtn.add{background:var(--gold);color:#171711;border-color:var(--gold)}
+  .foot{display:flex;justify-content:space-between;align-items:center;color:#777367;font:8px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;flex:0 0 12px}
+  .foot a{color:#91815d;text-decoration:none}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:10;display:none;align-items:center;justify-content:center;padding:18px}
+  .overlay.open{display:flex}
+  .modal{width:min(440px,100%);max-height:90%;overflow:auto;background:#1b1c18;border:1px solid var(--line);border-radius:18px;padding:19px;box-shadow:0 20px 60px #000}
+  .modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  .modalhead h2{font-size:20px;font-weight:400;margin:0;color:var(--cream)}
+  .close{border:0;background:none;color:var(--muted);font:22px Arial;padding:4px}
+  .field{margin:14px 0}
+  .field label{display:block;font:10px Arial,sans-serif;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
+  .field input,.field select{width:100%;background:#11120f;border:1px solid #504733;border-radius:9px;padding:11px;color:var(--cream);font:14px Arial,sans-serif;outline:none}
+  .field p{font:11px/1.5 Arial,sans-serif;color:var(--muted);margin:7px 0 0}
+  .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+  .modal .smallbtn{padding:9px 14px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#e9dfca;color:#191912;border-radius:999px;padding:9px 15px;font:11px Arial,sans-serif;z-index:20;transition:.25s;max-width:90%;text-align:center}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  .weather-credit{font:8px Arial,sans-serif;color:#837b6b;margin-top:2px}
+  @media(max-width:650px){
+    .app{padding:10px;gap:8px}.topbar{height:25px;flex-basis:25px}.topright{font-size:8px;gap:7px}
+    .main{grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:9px}
+    .clock{font-size:clamp(48px,10.5vw,76px)}.datebig{font-size:16px}.datebig small{font-size:8px}
+    .card{padding:9px;border-radius:13px;min-height:98px}.weather-meta{font-size:8px;gap:5px}.weather-desc{font-size:9px}
+    .timer-actions{gap:4px}.smallbtn{padding:6px 8px;font-size:9px}
+    .photo{border-radius:15px}.photo:before{inset:6px;border-radius:10px}.photo-overlay{padding:13px}.photobtn{width:27px;height:27px}
+  }
+  @media(max-height:380px){
+    .app{padding:8px 12px;gap:5px}.topbar{height:22px;flex-basis:22px}.left{padding:0}.clock{font-size:clamp(48px,10vh,76px)}.datebig{margin-top:7px;font-size:15px}.datebig small{margin-top:3px}.week-strip{margin-top:6px;gap:3px}.daychip{padding:4px 2px}.daychip .dom{font-size:12px}.info-row{margin-top:7px}.card{min-height:86px;padding:8px}.timer-value{margin-top:6px}.timer-actions{margin-top:6px}.weather-main{margin-top:5px}.weather-meta{margin-top:5px}
+  }
+  @media(orientation:portrait){
+    .main{grid-template-columns:1fr;grid-template-rows:auto minmax(110px,1fr);overflow:auto}
+    .left{padding:4px 0}.clock{font-size:clamp(58px,15vw,100px)}.info-row{margin-top:10px}.photo{min-height:150px}
+    .app{overflow:auto}.foot{padding-bottom:2px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">Quiet Desk <span style="color:#6f6b5c">/</span> No. 01</div>
+    <div class="topright"><span id="connection">LOCAL TIME</span><div class="topbuttons"><button class="iconbtn" id="fullscreenBtn" aria-label="Full screen" title="Full screen">⛶</button><button class="iconbtn" id="settingsBtn" aria-label="Settings" title="Settings">⚙</button></div></div>
+  </header>
+  <main class="main">
+    <section class="left">
+      <div>
+        <div class="datehead"><span class="dot"></span><span id="weekdayLine">YOUR DESK COMPANION</span></div>
+        <div class="clockblock">
+          <div class="clock" id="clock">--<span class="colon">:</span>--</div>
+          <div class="ampm" id="ampm">LOCAL TIME</div>
+          <div class="datebig" id="dateBig">Loading date…<small id="dateSmall">YOUR LOCAL CALENDAR</small></div>
+          <div class="week-strip" id="weekStrip" aria-label="This week"></div>
+        </div>
+      </div>
+      <div class="info-row">
+        <section class="card" aria-label="Weather">
+          <div class="eyebrow"><span>Weather</span><span id="weatherPlace">SET LOCATION</span></div>
+          <div class="weather-main"><div class="weather-icon" id="weatherIcon">☼</div><div><div class="temp" id="temperature">--°</div><div class="weather-desc" id="weatherDesc">Add your city in settings</div></div></div>
+          <div class="weather-meta"><span id="feelsLike">Feels --°</span><span id="humidity">Humidity --%</span></div>
+          <div class="weather-credit">Weather by <a class="weather-link" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a></div>
+        </section>
+        <section class="card" aria-label="Pomodoro timer">
+          <div class="eyebrow"><span>Focus timer</span><span id="timerStatus">READY</span></div>
+          <div class="timer-value" id="timerValue">25:00</div>
+          <div class="timer-mode" id="timerMode">25 MIN · FOCUS</div>
+          <div class="timer-actions">
+            <button class="smallbtn primary" id="timerStart">Start</button>
+            <button class="smallbtn" id="timerModeBtn">5 min break</button>
+            <button class="smallbtn" id="timerReset" aria-label="Reset timer">↺</button>
+          </div>
+        </section>
+      </div>
+    </section>
+    <section class="photo" id="photoPanel" aria-label="Photo slideshow">
+      <img id="photoImg" alt="Your desk photo slideshow">
+      <div class="empty-photo">
+        <div class="frameicon">◇</div>
+        <strong>A little gallery</strong>
+        <span>Add a few photographs. They will stay saved on this phone and rotate quietly here.</span>
+        <button class="smallbtn primary" id="emptyAdd">Add photographs</button>
+      </div>
+      <div class="photo-overlay">
+        <div class="photo-label"><div class="eyebrow">Collected moments <span id="photoCount"></span></div><div class="photo-name" id="photoName">Your photographs</div></div>
+        <div class="photo-controls">
+          <button class="photobtn" id="prevPhoto" aria-label="Previous photo">‹</button>
+          <button class="photobtn" id="playPhotos" aria-label="Pause slideshow">Ⅱ</button>
+          <button class="photobtn" id="nextPhoto" aria-label="Next photo">›</button>
+          <button class="photobtn add" id="addPhotos" aria-label="Add photos">＋</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="foot"><span>TAKE YOUR TIME · DO ONE THING WELL</span><span id="footerDate">LOCAL · INDIA</span></footer>
+</div>
+<input id="photoPicker" type="file" accept="image/*" multiple hidden>
+<div class="overlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-label="Desk settings">
+  <div class="modal">
+    <div class="modalhead"><h2>Desk settings</h2><button class="close" id="closeSettings" aria-label="Close">×</button></div>
+    <div class="field"><label for="cityInput">Weather location</label><input id="cityInput" type="text" placeholder="e.g. Khammam or Chennai" autocomplete="off"><p>Enter a town or city. Weather refreshes automatically about every 30 minutes when the phone is online.</p></div>
+    <div class="field"><label for="clockFormat">Clock format</label><select id="clockFormat"><option value="12">12-hour with AM / PM</option><option value="24">24-hour</option></select></div>
+    <div class="field"><label for="slideInterval">Photo change interval</label><select id="slideInterval"><option value="8">Every 8 seconds</option><option value="12">Every 12 seconds</option><option value="20">Every 20 seconds</option><option value="30">Every 30 seconds</option></select></div>
+    <div class="field"><label>Photo library</label><p id="libraryInfo">Photos you add are resized and saved locally in this browser on this phone.</p><button class="smallbtn" id="clearPhotos">Clear saved photos</button></div>
+    <div class="modal-actions"><button class="smallbtn" id="cancelSettings">Close</button><button class="smallbtn primary" id="saveSettings">Save settings</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+  'use strict';
+  var $ = function(id){ return document.getElementById(id); };
+  var clockFormat = localStorage.getItem('qd_clock_format') || '12';
+  var slideInterval = parseInt(localStorage.getItem('qd_slide_interval') || '12',10);
+  var weatherCity = localStorage.getItem('qd_weather_city') || '';
+  var weatherLat = localStorage.getItem('qd_weather_lat');
+  var weatherLon = localStorage.getItem('qd_weather_lon');
+  var weatherTimer = null;
+  var currentWeather = null;
+  var toastTimer = null;
+  var photos = [];
+  var photoUrls = [];
+  var photoIndex = 0;
+  var photoTimer = null;
+  var photoPlaying = true;
+  var db = null;
+  var timerMode = 'focus';
+  var timerDuration = 25 * 60;
+  var timerRemaining = timerDuration;
+  var timerEndAt = null;
+  var timerInterval = null;
+  var timerRunning = false;
+
+  function showToast(message){
+    $('toast').textContent = message;
+    $('toast').classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ $('toast').classList.remove('show'); },2600);
+  }
+  function updateClock(){
+    var now = new Date();
+    var h = now.getHours(), m = now.getMinutes();
+    var displayH = clockFormat === '24' ? h : (h % 12 || 12);
+    var hh = String(displayH).padStart(2,'0');
+    var mm = String(m).padStart(2,'0');
+    $('clock').innerHTML = hh + '<span class="colon">:</span>' + mm;
+    $('ampm').textContent = clockFormat === '24' ? '24-HOUR LOCAL TIME' : (h >= 12 ? 'PM · LOCAL TIME' : 'AM · LOCAL TIME');
+    var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    $('weekdayLine').textContent = days[now.getDay()] + ' · YOUR DESK COMPANION';
+    $('dateBig').childNodes[0].textContent = days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()];
+    $('dateSmall').textContent = now.getFullYear() + ' · ' + now.toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'}).toUpperCase();
+    $('footerDate').textContent = now.toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short'}).toUpperCase() + ' · LOCAL';
+    var start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var mondayOffset = (start.getDay() + 6) % 7;
+    start.setDate(start.getDate() - mondayOffset);
+    var strip = '';
+    var shortDays = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
+    for(var i=0;i<7;i++){
+      var d = new Date(start.getFullYear(),start.getMonth(),start.getDate()+i);
+      var today = d.toDateString() === now.toDateString();
+      strip += '<div class="daychip'+(today?' today':'')+'"><span class="dow">'+shortDays[i]+'</span><span class="dom">'+d.getDate()+'</span></div>';
+    }
+    $('weekStrip').innerHTML = strip;
+  }
+
+  function weatherLabel(code){
+    if(code === 0) return ['Clear sky','☀'];
+    if(code === 1) return ['Mainly clear','🌤'];
+    if(code === 2) return ['Partly cloudy','⛅'];
+    if(code === 3) return ['Overcast','☁'];
+    if(code === 45 || code === 48) return ['Fog','🌫'];
+    if(code >= 51 && code <= 57) return ['Drizzle','🌦'];
+    if(code >= 61 && code <= 67) return ['Rain','🌧'];
+    if(code >= 71 && code <= 77) return ['Snow','❄'];
+    if(code >= 80 && code <= 82) return ['Rain showers','🌦'];
+    if(code === 85 || code === 86) return ['Snow showers','🌨'];
+    if(code >= 95) return ['Thunderstorm','⛈'];
+    return ['Current conditions','☼'];
+  }
+  function setWeatherLoading(text){ $('weatherDesc').textContent = text; }
+  function loadWeather(){
+    if(!weatherCity || !weatherLat || !weatherLon){
+      $('weatherPlace').textContent = 'SET LOCATION';
+      setWeatherLoading('Add your city in settings');
+      return;
+    }
+    $('weatherPlace').textContent = weatherCity.toUpperCase();
+    setWeatherLoading('Updating conditions…');
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + encodeURIComponent(weatherLat) + '&longitude=' + encodeURIComponent(weatherLon) + '&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto';
+    fetch(url).then(function(r){ if(!r.ok) throw new Error('Weather unavailable'); return r.json(); }).then(function(data){
+      if(!data.current) throw new Error('No current weather');
+      var c = data.current, desc = weatherLabel(c.weather_code);
+      currentWeather = c;
+      $('temperature').textContent = Math.round(c.temperature_2m) + '°';
+      $('weatherIcon').textContent = desc[1];
+      $('weatherDesc').textContent = desc[0];
+      $('feelsLike').textContent = 'Feels ' + Math.round(c.apparent_temperature) + '°';
+      $('humidity').textContent = 'Humidity ' + Math.round(c.relative_humidity_2m) + '%';
+      $('connection').textContent = 'WEATHER UPDATED';
+      localStorage.setItem('qd_weather_cache',JSON.stringify({time:Date.now(),data:c,city:weatherCity}));
+    }).catch(function(){
+      var cached = localStorage.getItem('qd_weather_cache');
+      if(cached){
+        try{var old=JSON.parse(cached);var d=old.data;var lab=weatherLabel(d.weather_code);$('temperature').textContent=Math.round(d.temperature_2m)+'°';$('weatherIcon').textContent=lab[1];$('weatherDesc').textContent=lab[0]+' · cached';$('feelsLike').textContent='Feels '+Math.round(d.apparent_temperature)+'°';$('humidity').textContent='Humidity '+Math.round(d.relative_humidity_2m)+'%';}catch(e){setWeatherLoading('Weather temporarily unavailable');}
+      } else setWeatherLoading('Connect to internet for weather');
+      $('connection').textContent = 'LOCAL TIME';
+    });
+  }
+  function saveWeatherLocation(name){
+    if(!name.trim()){showToast('Enter a town or city first.');return;}
+    showToast('Finding ' + name.trim() + '…');
+    var url = 'https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(name.trim()) + '&count=5&language=en&format=json';
+    fetch(url).then(function(r){if(!r.ok)throw new Error('Lookup failed');return r.json();}).then(function(data){
+      if(!data.results || !data.results.length) throw new Error('No matching place');
+      var place = data.results[0];
+      weatherCity = place.name + (place.admin1 ? ', ' + place.admin1 : '');
+      weatherLat = String(place.latitude); weatherLon = String(place.longitude);
+      localStorage.setItem('qd_weather_city',weatherCity);localStorage.setItem('qd_weather_lat',weatherLat);localStorage.setItem('qd_weather_lon',weatherLon);
+      $('cityInput').value = weatherCity;$('weatherPlace').textContent = weatherCity.toUpperCase();
+      loadWeather();showToast('Weather location saved.');
+    }).catch(function(){showToast('Could not find that place. Check the spelling or internet.');});
+  }
+
+  function openDB(){
+    return new Promise(function(resolve,reject){
+      if(!window.indexedDB){reject(new Error('Photo storage is not available in this browser.'));return;}
+      var req = indexedDB.open('QuietDeskJ7',1);
+      req.onupgradeneeded = function(){var d=req.result;if(!d.objectStoreNames.contains('photos'))d.createObjectStore('photos',{keyPath:'id',autoIncrement:true});};
+      req.onsuccess=function(){db=req.result;resolve(db);};req.onerror=function(){reject(req.error||new Error('Could not open photo storage'));};
+    });
+  }
+  function dbGetPhotos(){
+    return new Promise(function(resolve,reject){var tx=db.transaction('photos','readonly');var req=tx.objectStore('photos').getAll();req.onsuccess=function(){resolve(req.result||[]);};req.onerror=function(){reject(req.error);};});
+  }
+  function dbAddPhoto(blob,name){
+    return new Promise(function(resolve,reject){var tx=db.transaction('photos','readwrite');var req=tx.objectStore('photos').add({blob:blob,name:name,added:Date.now()});req.onsuccess=function(){resolve(req.result);};req.onerror=function(){reject(req.error);};});
+  }
+  function dbDeletePhoto(id){return new Promise(function(resolve,reject){var tx=db.transaction('photos','readwrite');var req=tx.objectStore('photos').delete(id);req.onsuccess=function(){resolve();};req.onerror=function(){reject(req.error);};});}
+  function dbClearPhotos(){return new Promise(function(resolve,reject){var tx=db.transaction('photos','readwrite');var req=tx.objectStore('photos').clear();req.onsuccess=function(){resolve();};req.onerror=function(){reject(req.error);};});}
+  function compressImage(file){
+    return new Promise(function(resolve,reject){
+      var url=URL.createObjectURL(file), img=new Image();
+      img.onload=function(){
+        var maxW=1500,maxH=1100,scale=Math.min(1,maxW/img.width,maxH/img.height);
+        var canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));
+        var ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        canvas.toBlob(function(blob){URL.revokeObjectURL(url);if(blob)resolve(blob);else reject(new Error('Image conversion failed'));},'image/jpeg',0.82);
+      };
+      img.onerror=function(){URL.revokeObjectURL(url);reject(new Error('Could not read ' + file.name));};img.src=url;
+    });
+  }
+  function renderPhoto(){
+    photoUrls.forEach(function(u){URL.revokeObjectURL(u.url);});photoUrls=[];
+    photos.forEach(function(p){photoUrls.push({id:p.id,name:p.name,url:URL.createObjectURL(p.blob)});});
+    $('photoCount').textContent=photos.length ? (photoIndex+1)+' / '+photos.length : '';
+    if(!photos.length){$('photoPanel').classList.remove('has-photo');$('photoImg').removeAttribute('src');$('photoName').textContent='Your photographs';return;}
+    if(photoIndex>=photos.length)photoIndex=0;
+    var p=photoUrls[photoIndex];$('photoPanel').classList.add('has-photo');$('photoImg').src=p.url;$('photoName').textContent=p.name.replace(/\.[^.]+$/,'');$('photoCount').textContent=(photoIndex+1)+' / '+photos.length;
+  }
+  function reloadPhotos(){return dbGetPhotos().then(function(list){photos=list;photoIndex=0;renderPhoto();restartSlideshow();$('libraryInfo').textContent=photos.length+' photograph'+(photos.length===1?'':'s')+' saved on this phone.';}).catch(function(){showToast('Could not load saved photographs.');});}
+  function nextPhoto(step){if(!photos.length)return;photoIndex=(photoIndex+step+photos.length)%photos.length;renderPhoto();}
+  function restartSlideshow(){clearInterval(photoTimer);if(photoPlaying && photos.length>1)photoTimer=setInterval(function(){nextPhoto(1);},slideInterval*1000);$('playPhotos').textContent=photoPlaying?'Ⅱ':'▶';$('playPhotos').setAttribute('aria-label',photoPlaying?'Pause slideshow':'Play slideshow');}
+  function openPicker(){$('photoPicker').click();}
+  $('photoPicker').addEventListener('change',function(e){
+    var files=Array.prototype.slice.call(e.target.files||[]).filter(function(f){return f.type.indexOf('image/')===0;});
+    if(!files.length)return;
+    showToast('Saving '+files.length+' photograph'+(files.length===1?'':'s')+'…');
+    (async function(){var done=0;for(var i=0;i<files.length;i++){try{var blob=await compressImage(files[i]);await dbAddPhoto(blob,files[i].name);done++;}catch(err){}}
+      await reloadPhotos();showToast(done+' photograph'+(done===1?'':'s')+' saved.');e.target.value='';})();
+  });
+
+  function timerRender(){
+    var mins=Math.floor(timerRemaining/60),secs=timerRemaining%60;
+    $('timerValue').textContent=String(mins).padStart(2,'0')+':'+String(secs).padStart(2,'0');
+    $('timerMode').textContent=timerMode==='focus'?'25 MIN · FOCUS':'5 MIN · BREAK';
+    $('timerStatus').textContent=timerRunning?'IN SESSION':(timerRemaining===0?'COMPLETE':'READY');
+    $('timerStart').textContent=timerRunning?'Pause':(timerRemaining===0?'Restart':'Start');
+    $('timerModeBtn').textContent=timerMode==='focus'?'5 min break':'25 min focus';
+  }
+  function timerTick(){if(!timerRunning || timerEndAt===null)return;timerRemaining=Math.max(0,Math.ceil((timerEndAt-Date.now())/1000));if(timerRemaining<=0){timerRunning=false;timerEndAt=null;clearInterval(timerInterval);timerInterval=null;timerRender();showToast(timerMode==='focus'?'Focus session complete. Take a little break.':'Break complete. Ready for another session?');return;}timerRender();}
+  function timerStartPause(){
+    if(timerRunning){timerTick();timerRunning=false;timerEndAt=null;clearInterval(timerInterval);timerInterval=null;timerRender();return;}
+    if(timerRemaining<=0)timerRemaining=timerDuration;
+    timerRunning=true;timerEndAt=Date.now()+timerRemaining*1000;clearInterval(timerInterval);timerInterval=setInterval(timerTick,500);timerRender();
+  }
+  function timerReset(){timerRunning=false;timerEndAt=null;clearInterval(timerInterval);timerInterval=null;timerRemaining=timerDuration;timerRender();}
+  function timerChangeMode(){timerMode=timerMode==='focus'?'break':'focus';timerDuration=timerMode==='focus'?25*60:5*60;timerReset();}
+  $('timerStart').addEventListener('click',timerStartPause);$('timerReset').addEventListener('click',timerReset);$('timerModeBtn').addEventListener('click',timerChangeMode);
+  $('prevPhoto').addEventListener('click',function(){nextPhoto(-1);});$('nextPhoto').addEventListener('click',function(){nextPhoto(1);});
+  $('playPhotos').addEventListener('click',function(){photoPlaying=!photoPlaying;restartSlideshow();});
+  $('addPhotos').addEventListener('click',openPicker);$('emptyAdd').addEventListener('click',openPicker);
+  $('settingsBtn').addEventListener('click',function(){$('cityInput').value=weatherCity;$('clockFormat').value=clockFormat;$('slideInterval').value=String(slideInterval);$('settingsOverlay').classList.add('open');});
+  function closeSettings(){$('settingsOverlay').classList.remove('open');}
+  $('closeSettings').addEventListener('click',closeSettings);$('cancelSettings').addEventListener('click',closeSettings);
+  $('saveSettings').addEventListener('click',function(){
+    var newCity=$('cityInput').value.trim();
+    clockFormat=$('clockFormat').value;slideInterval=parseInt($('slideInterval').value,10)||12;
+    localStorage.setItem('qd_clock_format',clockFormat);localStorage.setItem('qd_slide_interval',String(slideInterval));
+    updateClock();restartSlideshow();closeSettings();
+    if(newCity && newCity.toLowerCase()!==weatherCity.toLowerCase())saveWeatherLocation(newCity);
+    else if(!weatherCity && newCity)saveWeatherLocation(newCity);
+    else showToast('Settings saved.');
+  });
+  $('clearPhotos').addEventListener('click',function(){
+    if(!photos.length){showToast('There are no saved photos.');return;}
+    if(!confirm('Remove all saved photographs from this desk display?'))return;
+    dbClearPhotos().then(function(){photos=[];photoIndex=0;renderPhoto();restartSlideshow();$('libraryInfo').textContent='No photographs saved yet.';showToast('Photo library cleared.');}).catch(function(){showToast('Could not clear the photo library.');});
+  });
+  $('settingsOverlay').addEventListener('click',function(e){if(e.target===$('settingsOverlay'))closeSettings();});
+
+  updateClock();setInterval(updateClock,1000);timerRender();
+  if(weatherCity){$('weatherPlace').textContent=weatherCity.toUpperCase();loadWeather();}
+  weatherTimer=setInterval(loadWeather,30*60*1000);
+  openDB().then(reloadPhotos).catch(function(){showToast('Photo storage unavailable. Try Chrome on the phone.');});
+  var wakeLock = null;
+  function requestWakeLock(){
+    if(!('wakeLock' in navigator)) return;
+    navigator.wakeLock.request('screen').then(function(lock){wakeLock=lock;}).catch(function(){});
+  }
+  $('fullscreenBtn').addEventListener('click',function(){
+    var root=document.documentElement;
+    var enter=root.requestFullscreen || root.webkitRequestFullscreen;
+    if(enter){
+      var result=enter.call(root);
+      if(result && result.catch) result.catch(function(){showToast('Use Chrome menu to enter full screen.');});
+      requestWakeLock();
+    } else showToast('Full screen is not supported here. Try Chrome.');
+  });
+  document.addEventListener('fullscreenchange',function(){if(document.fullscreenElement)requestWakeLock();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden){updateClock();timerTick();requestWakeLock();}});
+  if('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost')){
+    window.addEventListener('load',function(){navigator.serviceWorker.register('./service-worker.js').catch(function(){showToast('Offline app setup could not be enabled in this browser.');});});
+  }
+})();
+</script>
+</body>
+</html>
