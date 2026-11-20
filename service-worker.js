@@ -1,5 +1,5 @@
 'use strict';
-var CACHE_NAME = 'quiet-desk-j7-v8';
+var CACHE_NAME = 'quiet-desk-j7-v9';
 var APP_FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(CACHE_NAME).then(function(cache) { return cache.addAll(APP_FILES); }));
