@@ -109,12 +109,61 @@
     .left{padding:4px 0}.clock{font-size:clamp(58px,15vw,100px)}.info-row{margin-top:10px}.photo{min-height:150px}
     .app{overflow:auto}.foot{padding-bottom:2px}
   }
+
+/* Quiet Desk No. 02 — compact landscape, AMOLED-first */
+:root{--bg:#000000;--panel:#080808;--panel2:#10100e;--line:#30291e;--gold:#c0a065;--gold-soft:#897348;--cream:#eee6d5;--muted:#918979;--radius:11px}
+html,body{background:#000}
+.app{padding:7px;gap:5px;background:var(--bg)}
+.topbar{height:21px;flex-basis:21px;padding-bottom:4px}
+.main{grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:7px}
+.left{justify-content:flex-start;gap:7px;padding:1px 0}
+.clock{font-size:clamp(44px,10vw,76px);text-shadow:none;animation:qdPixelShift 100s steps(1,end) infinite}
+@keyframes qdPixelShift{0%,24%{transform:translate(0,0)}25%,49%{transform:translate(1px,0)}50%,74%{transform:translate(1px,1px)}75%,99%{transform:translate(0,1px)}}
+.ampm{margin:3px 0 0 3px}
+.datebig{font-size:clamp(14px,2vw,19px);margin-top:6px}
+.datebig small{font-size:7px;margin-top:3px}
+.week-strip{margin-top:5px;gap:3px}
+.daychip{padding:3px 1px 2px;border-radius:6px;background:#050505}
+.daychip .dow{font-size:6px}.daychip .dom{font-size:10px;margin-top:2px}
+.info-row{gap:5px;margin-top:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:7px;min-height:75px;box-shadow:none}
+.eyebrow{font-size:7px;letter-spacing:.11em}
+.weather-main{margin-top:4px;gap:5px}.weather-icon{font-size:20px}.temp{font-size:24px}
+.weather-desc{font-size:7px;margin-top:2px}.weather-meta{font-size:6px;margin-top:4px;gap:5px}
+.weather-link,.weather-credit{font-size:6px;margin-top:3px}
+.timer-value{font-size:clamp(22px,3.5vw,30px);margin-top:5px}
+.timer-mode{font-size:6px;margin-top:2px}.timer-actions{gap:3px;margin-top:5px}
+.smallbtn{padding:4px 7px;font-size:7px}.timer-actions .smallbtn{min-height:21px}
+.photo{border-radius:11px;background:#050505;border-color:var(--line);box-shadow:none}
+.photo:before{inset:4px;border-color:#17130d;border-radius:8px}
+.photo:after{inset:55% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.65))}
+.empty-photo{gap:5px;padding:7px}.empty-photo .frameicon{font-size:20px}.empty-photo strong{font-size:12px}.empty-photo span{font-size:7px;max-width:125px}
+.photo-overlay{padding:7px}.photo-label .eyebrow{font-size:6px}.photo-name{font-size:10px;margin-top:2px}
+.photobtn{width:22px;height:22px;font-size:11px}
+.foot{font-size:6px;flex-basis:9px}
+.modal{background:#080808;border-color:var(--line)}
+.field input,.field select{background:#000;border-color:var(--line)}
+.field input[type=color]{height:36px;padding:3px;width:100%}
+.theme-swatch{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.theme-note{font:10px/1.4 Arial,sans-serif;color:var(--muted);margin-top:6px}
+body[data-theme="obsidian"]{--bg:#000000;--panel:#080808;--panel2:#10100e;--line:#30291e;--cream:#eee6d5;--muted:#918979}
+body[data-theme="classic"]{--bg:#10110f;--panel:#191a17;--panel2:#24241f;--line:#4b4434;--cream:#eee6d4;--muted:#a59d8d}
+body[data-theme="forest"]{--bg:#050d08;--panel:#0b160f;--panel2:#112017;--line:#263e2e;--cream:#e0ebdf;--muted:#91a294}
+body[data-theme="midnight"]{--bg:#070b14;--panel:#0e1522;--panel2:#151f31;--line:#293852;--cream:#e4eaf5;--muted:#929db2}
+body[data-theme="mahogany"]{--bg:#100907;--panel:#1a100e;--panel2:#251713;--line:#4b2c25;--cream:#f0ded2;--muted:#ad9185}
+body[data-theme="custom"]{--bg:#050505;--panel:#101010;--panel2:#171717;--line:#38332b;--cream:#eee6d5;--muted:#aaa08e}
+body[data-theme="classic"] .app,body[data-theme="forest"] .app,body[data-theme="midnight"] .app,body[data-theme="mahogany"] .app{background:var(--bg)}
+body.qd-dim:after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:9;pointer-events:none}
+@media(max-width:650px){.app{padding:6px;gap:4px}.main{grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:5px}.clock{font-size:clamp(42px,10vw,66px)}.card{min-height:70px;padding:6px}.photo-overlay{padding:6px}.photobtn{width:21px;height:21px}}
+@media(max-height:430px){.app{padding:6px;gap:4px}.topbar{height:19px;flex-basis:19px}.left{gap:6px}.clock{font-size:clamp(40px,12.5vh,60px)}.ampm{font-size:7px}.datebig{font-size:13px}.datebig small{font-size:6px}.week-strip{margin-top:4px}.card{min-height:66px;padding:5px}.weather-main{margin-top:3px}.timer-value{margin-top:4px;font-size:23px}.timer-actions{margin-top:4px}.photo:before{inset:3px}.foot{flex-basis:7px}}
+@media(max-width:350px){.main{grid-template-columns:minmax(0,1fr) 36%}.daychip .dow{font-size:5px}.weather-credit{display:none}.photo-name{max-width:70px}}
+@media(prefers-reduced-motion:reduce){.clock{animation:none}}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="topbar">
-    <div class="brand">Quiet Desk <span style="color:#6f6b5c">/</span> No. 01</div>
+    <div class="brand">Quiet Desk <span style="color:#6f6b5c">/</span> No. 02</div>
     <div class="topright"><span id="connection">LOCAL TIME</span><div class="topbuttons"><button class="iconbtn" id="fullscreenBtn" aria-label="Full screen" title="Full screen">⛶</button><button class="iconbtn" id="settingsBtn" aria-label="Settings" title="Settings">⚙</button></div></div>
   </header>
   <main class="main">
@@ -129,13 +178,13 @@
         </div>
       </div>
       <div class="info-row">
-        <section class="card" aria-label="Weather">
+        <section class="card" id="weatherCard" aria-label="Weather">
           <div class="eyebrow"><span>Weather</span><span id="weatherPlace">SET LOCATION</span></div>
           <div class="weather-main"><div class="weather-icon" id="weatherIcon">☼</div><div><div class="temp" id="temperature">--°</div><div class="weather-desc" id="weatherDesc">Add your city in settings</div></div></div>
           <div class="weather-meta"><span id="feelsLike">Feels --°</span><span id="humidity">Humidity --%</span></div>
           <div class="weather-credit">Weather by <a class="weather-link" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a></div>
         </section>
-        <section class="card" aria-label="Pomodoro timer">
+        <section class="card" id="timerCard" aria-label="Pomodoro timer">
           <div class="eyebrow"><span>Focus timer</span><span id="timerStatus">READY</span></div>
           <div class="timer-value" id="timerValue">25:00</div>
           <div class="timer-mode" id="timerMode">25 MIN · FOCUS</div>
@@ -173,6 +222,9 @@
   <div class="modal">
     <div class="modalhead"><h2>Desk settings</h2><button class="close" id="closeSettings" aria-label="Close">×</button></div>
     <div class="field"><label for="cityInput">Weather location</label><input id="cityInput" type="text" placeholder="e.g. Khammam or Chennai" autocomplete="off"><p>Enter a town or city. Weather refreshes automatically about every 30 minutes when the phone is online.</p></div>
+    <div class="field"><label for="themeSelect">Display theme</label><select id="themeSelect"><option value="obsidian">Obsidian · pure AMOLED black</option><option value="classic">Classic · charcoal and gold</option><option value="forest">Forest · deep green</option><option value="midnight">Midnight · navy</option><option value="mahogany">Mahogany · dark red-brown</option><option value="custom">Custom · black base</option></select><p>Theme changes are saved on this phone.</p></div>
+    <div class="field"><label for="accentColor">Custom accent colour</label><input id="accentColor" type="color" value="#c0a065"><p>Choose the highlight colour used for the clock details and controls.</p></div>
+    <div class="field"><label><input id="dimEnabled" type="checkbox" style="width:auto;vertical-align:middle;margin-right:7px"> Dim after 5 minutes without interaction</label><p>Tap anywhere to restore normal brightness. This is an overlay, not a hardware brightness control.</p></div>
     <div class="field"><label for="clockFormat">Clock format</label><select id="clockFormat"><option value="12">12-hour with AM / PM</option><option value="24">24-hour</option></select></div>
     <div class="field"><label for="slideInterval">Photo change interval</label><select id="slideInterval"><option value="8">Every 8 seconds</option><option value="12">Every 12 seconds</option><option value="20">Every 20 seconds</option><option value="30">Every 30 seconds</option></select></div>
     <div class="field"><label>Photo library</label><p id="libraryInfo">Photos you add are resized and saved locally in this browser on this phone.</p><button class="smallbtn" id="clearPhotos">Clear saved photos</button></div>
@@ -204,6 +256,25 @@
   var timerEndAt = null;
   var timerInterval = null;
   var timerRunning = false;
+  var themeName = localStorage.getItem('qd_theme') || 'obsidian';
+  var accentColor = localStorage.getItem('qd_accent') || '#c0a065';
+  var dimEnabled = localStorage.getItem('qd_dim_enabled') === '1';
+  var idleTimer = null;
+  function applyTheme(){
+    document.body.setAttribute('data-theme',themeName);
+    document.documentElement.style.setProperty('--gold',accentColor);
+    document.documentElement.style.setProperty('--gold-soft',accentColor);
+  }
+  function resetIdleDim(){
+    clearTimeout(idleTimer);
+    document.body.classList.remove('qd-dim');
+    if(dimEnabled) idleTimer=setTimeout(function(){document.body.classList.add('qd-dim');},5*60*1000);
+  }
+  applyTheme();
+  ['pointerdown','touchstart','keydown','mousemove'].forEach(function(evt){
+    document.addEventListener(evt,resetIdleDim,{passive:true});
+  });
+  resetIdleDim();
 
   function showToast(message){
     $('toast').textContent = message;
@@ -364,13 +435,16 @@
   $('prevPhoto').addEventListener('click',function(){nextPhoto(-1);});$('nextPhoto').addEventListener('click',function(){nextPhoto(1);});
   $('playPhotos').addEventListener('click',function(){photoPlaying=!photoPlaying;restartSlideshow();});
   $('addPhotos').addEventListener('click',openPicker);$('emptyAdd').addEventListener('click',openPicker);
-  $('settingsBtn').addEventListener('click',function(){$('cityInput').value=weatherCity;$('clockFormat').value=clockFormat;$('slideInterval').value=String(slideInterval);$('settingsOverlay').classList.add('open');});
+  $('settingsBtn').addEventListener('click',function(){$('cityInput').value=weatherCity;$('clockFormat').value=clockFormat;$('slideInterval').value=String(slideInterval);$('themeSelect').value=themeName;$('accentColor').value=accentColor;$('dimEnabled').checked=dimEnabled;$('settingsOverlay').classList.add('open');});
   function closeSettings(){$('settingsOverlay').classList.remove('open');}
   $('closeSettings').addEventListener('click',closeSettings);$('cancelSettings').addEventListener('click',closeSettings);
   $('saveSettings').addEventListener('click',function(){
     var newCity=$('cityInput').value.trim();
     clockFormat=$('clockFormat').value;slideInterval=parseInt($('slideInterval').value,10)||12;
+    themeName=$('themeSelect').value;accentColor=$('accentColor').value||'#c0a065';dimEnabled=$('dimEnabled').checked;
     localStorage.setItem('qd_clock_format',clockFormat);localStorage.setItem('qd_slide_interval',String(slideInterval));
+    localStorage.setItem('qd_theme',themeName);localStorage.setItem('qd_accent',accentColor);localStorage.setItem('qd_dim_enabled',dimEnabled?'1':'0');
+    applyTheme();resetIdleDim();
     updateClock();restartSlideshow();closeSettings();
     if(newCity && newCity.toLowerCase()!==weatherCity.toLowerCase())saveWeatherLocation(newCity);
     else if(!weatherCity && newCity)saveWeatherLocation(newCity);
